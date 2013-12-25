@@ -1,18 +1,17 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h4 class="panel-title">
-      <a data-parent="#accordion" href="#collapseOne">
-        <%= player %>
-      </a>
-    </h4>
-  </div>
-  <div id="<%= player %>" class="panel-collapse collapse">
-    <div class="panel-body">
-      <p>Current score : <span class=""></span></p>
-      <div class="btn-group">
-        <button type="button" class="btn btn-success" id="hit">Hit </button>
-        <button type="button" class="btn btn-danger" id="miss">Miss </button>
-      </div>
+<div class="panel-heading">
+  <h4 class="panel-title">
+    <a data-parent="#accordion">
+      <%= player %>
+      <button class="btn btn-info btn-xs non-button"><span class="current-score pull-right">0</span></button>
+    </a>
+  </h4>
+</div>
+<div id="<%= player %>" class="panel-collapse collapse">
+  <div class="panel-body">
+    <p>Current score : <span class="current-score">0</span></p>
+    <div>
+      <button type="button" class="btn btn-success hit">Hit </button>
+      <button type="button" class="btn btn-danger miss">Miss </button>
     </div>
   </div>
 </div>
