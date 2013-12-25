@@ -20,7 +20,8 @@ app.Router = Backbone.Router.extend({
   routes : {
     "" : "home",
     "/" : "home",
-    "game/new" : "newGame"
+    "game/new" : "newGame",
+    "game/:id" : "game"
   },
 
   initialize : function () {
@@ -38,6 +39,11 @@ app.Router = Backbone.Router.extend({
     app.newGameView = new app.NewGameView();
     this.$content.append(app.newGameView.render().el);
     $('#newGameModal').modal({keyboard: false});
+  },
+
+  game : function () {
+    app.gameView = new app.GameView();
+    this.$content.html(app.gameView.render().el);
   }
 });
 
@@ -45,7 +51,9 @@ $(document).on("ready", function () {
   app.loadTemplates([
       "LayoutView",
       "HomeView",
-      "NewGameView"
+      "NewGameView",
+      "GameView",
+      "PlayerView"
     ], function () {
     app.router = new app.Router();
     Backbone.history.start();

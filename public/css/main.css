@@ -4,6 +4,12 @@ body {
   padding-bottom: 20px;
 }
 
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  float: none;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

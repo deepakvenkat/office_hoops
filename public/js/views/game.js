@@ -1,8 +1,6 @@
-app.HomeView = Backbone.View.extend({
+app.GameView = Backbone.View.extend({
 
   initialize : function () {},
-
-  className : 'jumbotron',
 
   render : function () {
     this.$el.html(this.template);

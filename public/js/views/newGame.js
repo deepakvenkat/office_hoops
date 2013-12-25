@@ -10,7 +10,8 @@ app.NewGameView = Backbone.View.extend({
   events : {
     'click #closeModal' : "goToRoot",
     'click #closeButton' : "goToRoot",
-    'click #morePlayers' : "addPlayer"
+    'click #morePlayers' : "addPlayer",
+    'click #start-game' : "startGame"
   },
 
   goToRoot : function () {
@@ -19,5 +20,13 @@ app.NewGameView = Backbone.View.extend({
 
   addPlayer : function () {
     $("#game", this.el).append('<input type="text" placeholder="Username" class="form-control username">')
+  },
+
+  startGame : function () {
+    //Do server stuff here and then reroute to the appropriate game page
+    $('#newGameModal').modal('hide');
+    $('#newGameModal').on('hidden.bs.modal', function (e) {
+      app.router.navigate('game/1', {trigger : true});
+    })
   }
 });
