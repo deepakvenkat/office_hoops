@@ -17,8 +17,12 @@ app.NewGameView = Backbone.View.extend({
   },
 
   goToRoot : function () {
-    this.remove();
-    app.router.navigate('/');
+    var view = app.newGameView;
+    $("#newGameModal").modal("hide");
+    $("#newGameModal").on('hidden.bs.modal', function (e) {
+      view.remove();
+      app.router.navigate("/", {trigger: true});
+    });
   },
 
   addPlayer : function () {
