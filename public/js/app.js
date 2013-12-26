@@ -26,7 +26,7 @@ app.Router = Backbone.Router.extend({
 
   initialize : function () {
     app.layoutView = new app.LayoutView();
-    $('body').html(app.layoutView.render().el)
+    $('body').html(app.layoutView.render().el);
     this.$content = $('#main-content');
   },
 
@@ -42,8 +42,9 @@ app.Router = Backbone.Router.extend({
     $('#newGameModal').modal({keyboard: false});
   },
 
-  game : function () {
-    app.gameView = new app.GameView();
+  game : function (id) {
+    app.gameModel.id = id;
+    app.gameView = new app.GameView({model: app.gameModel});
     this.$content.html(app.gameView.render().el);
   }
 });
@@ -54,7 +55,8 @@ $(document).on("ready", function () {
       "HomeView",
       "NewGameView",
       "GameView",
-      "PlayerView"
+      "PlayerView",
+      "WinnerView"
     ], function () {
     app.router = new app.Router();
     Backbone.history.start();
