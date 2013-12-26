@@ -36,7 +36,8 @@ app.Router = Backbone.Router.extend({
   },
 
   newGame : function () {
-    app.newGameView = new app.NewGameView();
+    app.gameModel = new app.GameModel();
+    app.newGameView = new app.NewGameView({model: app.gameModel});
     this.$content.append(app.newGameView.render().el);
     $('#newGameModal').modal({keyboard: false});
   },
