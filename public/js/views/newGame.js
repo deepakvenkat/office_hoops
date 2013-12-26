@@ -17,11 +17,12 @@ app.NewGameView = Backbone.View.extend({
   },
 
   goToRoot : function () {
+    this.remove();
     app.router.navigate('/');
   },
 
   addPlayer : function () {
-    $("#game", this.el).append('<input type="text" placeholder="Username" class="form-control username">')
+    $("#game", this.el).append('<input type="text" placeholder="Username" class="form-control username">');
   },
 
   startGame : function () {
@@ -36,13 +37,12 @@ app.NewGameView = Backbone.View.extend({
     this.model.fetch({data: params,
       type: "POST",
       success: function (d) {
+        var id = d.attributes.game["_id"];
         $('#newGameModal').modal('hide');
         $('#newGameModal').on('hidden.bs.modal', function (e) {
-          app.router.navigate('game/1', {trigger : true});
+          app.router.navigate('game/' + id, {trigger : true});
         });
       }
-    })
-    //Do server stuff here and then reroute to the appropriate game page
-
+    });
   }
 });
