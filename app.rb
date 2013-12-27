@@ -71,7 +71,7 @@ put '/api/game/:id' do
   end
 end
 
-get 'api/games_stats' do
+get '/api/stats' do
   game_stats = GameStats.all.first
   content_type :json
   {game_stats: game_stats}.to_json
