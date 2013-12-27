@@ -63,10 +63,18 @@ put '/api/game/:id' do
   game_obj.rounds = game["rounds"]
   game_obj.players = game["players"]
   game_obj.winner = winner
+  game_obj.game_date = DateTime.now
+  GameStats.generate_new_stats(winner, game_obj.game_date)
   if game_obj.save!
     content_type :json
     {game: game_obj}.to_json
   end
+end
+
+get 'api/games_stats' do
+  game_stats = GameStats.all.first
+  content_type :json
+  {game_stats: game_stats}.to_json
 end
 
 ####Models####
@@ -91,6 +99,47 @@ class Game
   field :rounds, type: Integer, default: 1
   field :usernames, type: Array
   field :players, type: Hash
-  field :winner, type: Array
-  field :game_date, type: Date, default: Date.today
+  field :winner, type: Array, default: []
+  field :game_date, type: DateTime
+end
+
+class GameStats
+  include Mongoid::Document
+  field :consecutive_wins, type: Hash, default: {}
+  field :last_game, type: DateTime
+  field :last_winner, type: Array, default: []
+  field :wins, type: Hash, default: {}
+
+  def self.generate_new_stats(winners, date)
+    game_stats = GameStats.all.first
+    game_stats = GameStats.new if !game_stats
+    game_stats["last_winner"] = winners
+    game_stats["last_game"] = date
+    winners.each do |winner|
+      wins = update_consecutive_win_for(winner, game_stats)
+      game_stats.consecutive_wins[winner] = wins
+      if game_stats.wins[winner].nil?
+        game_stats.wins[winner] = 1
+      else
+        game_stats.wins[winner] += 1
+      end
+    end
+    game_stats.save!
+  end
+
+  def self.update_consecutive_win_for(winner, game_stats)
+    return 1 if game_stats["consecutive_wins"][winner].nil?
+    consecutive_wins = game_stats["consecutive_wins"][winner]
+    games =  Game.all.desc(:game_date).limit(consecutive_wins)
+    inc = 0
+    games.each do |game|
+      break unless game.winner.include? winner
+      inc+=1
+    end
+    if inc == consecutive_wins
+      return consecutive_wins + 1
+    else
+      return consecutive_wins
+    end
+  end
 end
