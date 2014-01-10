@@ -11,6 +11,16 @@ body {
   text-align: center;
 }
 
+.chart rect {
+  fill: blue;
+}
+
+.chart text {
+  fill: white;
+  text-anchor: end;
+  font: 10px sans-serif;
+}
+
 .non-button {
   cursor: default;
 }
