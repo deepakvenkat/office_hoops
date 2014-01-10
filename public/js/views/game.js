@@ -29,7 +29,15 @@ app.GameView = Backbone.View.extend({
   playerAction : function (player, action) {
     var params = this.model.attributes.game;
     $("#" + player, this.el).collapse("toggle");
-    if (action === "hit") params.players[player].score += 1;
+    if (action === "hit") {
+      params.players[player].score += 1;
+      params.players[player].current_consecutive += 1;
+      if (params.players[player].max_consecutive < params.players[player].current_consecutive) {
+        params.players[player].max_consecutive = params.players[player].current_consecutive;
+      }
+    } else {
+      params.players[player].current_consecutive = 0
+    }
 
     var nextPlayer = params.players[player].next;
     if (!nextPlayer) {
