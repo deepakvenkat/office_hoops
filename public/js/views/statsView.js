@@ -36,10 +36,17 @@ app.StatsView = Backbone.View.extend({
     }
     champTemplate += "<p> Date: " + lastGame.toLocaleDateString() + "</p></div>";
     $("#champ", this.el).html(champTemplate);
+
     var wins = this.formatd3Data(stats.wins);
     var winsTemplate = "<svg class='chart' id='wins-chart'></svg>"
     $("#wins", this.el).html(winsTemplate);
     this.drawd3BarGraph(wins, "#wins-chart");
+
+    var consecutiveWins = this.formatd3Data(stats.consecutive_wins);
+
+    var consecutiveTemplate = "<svg class='chart' id='consecutive-chart'> </svg>";
+    $("#consecutive", this.el).html(consecutiveTemplate);
+    this.drawd3BarGraph(consecutiveWins, "#consecutive-chart");
   },
 
   formatd3Data: function(data) {
@@ -63,10 +70,10 @@ app.StatsView = Backbone.View.extend({
       left: 40
     },
       width = 420;
-      height = 20 ;
+      height = 300 ;
 
     var x = d3.scale.ordinal()
-      .rangeRoundBands([0, width], .1);
+      .rangeRoundBands([0, width], 0.1);
 
     var y = d3.scale.linear()
       .range([height, 0]);
@@ -78,7 +85,7 @@ app.StatsView = Backbone.View.extend({
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
-      .ticks(10, "%");
+
 
     var svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)

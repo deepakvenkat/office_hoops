@@ -12,11 +12,11 @@ body {
 }
 
 .chart rect {
-  fill: blue;
+  fill: #00ccff;
 }
 
 .chart text {
-  fill: white;
+  fill: black;
   text-anchor: end;
   font: 10px sans-serif;
 }
