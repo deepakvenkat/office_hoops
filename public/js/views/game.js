@@ -36,7 +36,7 @@ app.GameView = Backbone.View.extend({
         params.players[player].max_consecutive = params.players[player].current_consecutive;
       }
     } else {
-      params.players[player].current_consecutive = 0
+      params.players[player].current_consecutive = 0;
     }
 
     var nextPlayer = params.players[player].next;
