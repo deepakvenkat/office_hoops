@@ -21,17 +21,20 @@ end
 post '/api/game' do
   usernames = params["usernames"]
   players = {}
+  game_params = {}
   i = 0
   while i < usernames.length do
     username = usernames[i]
     players[username] = {}
     players[username]["score"] = 0
+    players[username]["misses"] = 0
     players[username]["current_consecutive"] = 0
     players[username]["max_consecutive"] = 0
     players[username]["next"] = usernames[i + 1] if i < (usernames.length - 1)
     i = i + 1
   end
-  game_params = params
+  game_params["name"] = params["name"]
+  game_params["rounds"] = params["rounds"].to_i
   game_params["players"] = players
   game = Game.new(game_params)
   if game.save!
@@ -51,6 +54,7 @@ put '/api/game/:id' do
   users.each do |user|
     player = players[user]
     score = player["score"].to_i
+    misses = player["missed"].to_i
     consecutive = player["max_consecutive"].to_i
     if score == max_score
       max_score = score
@@ -60,10 +64,9 @@ put '/api/game/:id' do
       winner = []
       winner << user
     end
-    user_rec = User.create_from_hash(user, score, game["rounds"].to_i, consecutive)
+    user_rec = User.create_from_hash(user, score, misses, consecutive)
   end
   game_obj = Game.find(game["_id"])
-  game_obj.rounds = game["rounds"]
   game_obj.players = game["players"]
   game_obj.winner = winner
   game_obj.game_date = DateTime.now
@@ -89,10 +92,10 @@ class User
   field :most_consecutive, type: Integer, default: 0
   validates_uniqueness_of :username
 
-  def self.create_from_hash(username, score, rounds, consecutive)
+  def self.create_from_hash(username, score, misses, consecutive)
     user = User.find_or_create_by(username: username)
     user.total_hits += score
-    user.total_misses += (rounds - 1 - score)
+    user.total_misses += misses
     if user.most_consecutive < consecutive
       user.most_consecutive = consecutive
     end

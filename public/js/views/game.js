@@ -13,6 +13,7 @@ app.GameView = Backbone.View.extend({
     }
     var game = this.model.attributes.game;
     var players = game.usernames;
+    game.current_round = 1;
     this.$el.html(this.template);
 
     for (var i = 0; i < players.length; i++) {
@@ -36,13 +37,30 @@ app.GameView = Backbone.View.extend({
         params.players[player].max_consecutive = params.players[player].current_consecutive;
       }
     } else {
-      params.players[player].current_consecutive = 0
+      params.players[player].current_consecutive = 0;
+      params.players[player].misses += 1;
     }
 
     var nextPlayer = params.players[player].next;
     if (!nextPlayer) {
-      $(".round", this.el).text(++params.rounds);
-      nextPlayer = params.usernames[0];
+      if (params.current_round >= params.rounds) {
+        var winner = this.checkForWinner();
+        if (winner.length === 1) {
+          this.endGame();
+        } else if (winner.length > 1) {
+          for (var i = 0; i < winner.length; i++) {
+            if (i === winner.length - 1) {
+              params.players[winner[i]].next = undefined;
+              nextPlayer = winner[0];
+            } else {
+              params.player[winner[i]].next = winner[i + 1];
+            }
+          }
+        }
+      } else {
+        $(".round", this.el).text(++params.current_round);
+        nextPlayer = params.usernames[0];
+      }
     }
     $("#" + nextPlayer, this.el).collapse("toggle");
   },
@@ -66,5 +84,25 @@ app.GameView = Backbone.View.extend({
         $("#winnerModal").modal({keyboard: false});
       }
     });
+  },
+
+  checkForWinner : function () {
+    var maxScore = -1;
+    var winners = [],
+        username,
+        player,
+        params = this.model.get('game');
+    for(var i = 0; i < params.username; i++) {
+      username = params.usernames[i];
+      player = params.players[username];
+      if (player.score > maxScore) {
+        winners = [];
+        winners.push(username);
+        maxScore = player.score;
+      } else if (player.score === maxScore) {
+        winners.push(username);
+      }
+    }
+    return winners;
   }
 });
