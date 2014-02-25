@@ -12,6 +12,6 @@ gem 'mongoid-autoinc'
 gem 'bson_ext'
 gem 'slim'
 
-gem 'unirest'
+gem 'unirest', '1.0.8'
 gem 'json'
 gem 'amatch'

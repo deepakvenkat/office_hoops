@@ -1,0 +1,1 @@
+{ "_id" : { "$oid" : "52bdc88d92881ee5d0000004" }, "consecutive_wins" : { "rob" : 3, "dennis" : 2, "jude" : 1 }, "last_game" : { "$date" : 1392932863585 }, "last_winner" : [ "rob" ], "wins" : {  "rob" : 7, "dennis" : 3, "jude" : 1 } }

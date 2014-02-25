@@ -1,0 +1,5 @@
+{ "_id" : { "$oid" : "52c1f2ba92881e6d36000002" }, "most_consecutive" : 4, "total_hits" : 23, "total_misses" : 44, "username" : "rob" }
+{ "_id" : { "$oid" : "52c1f2ba92881e6d36000003" }, "most_consecutive" : 2, "total_hits" : 14, "total_misses" : 40, "username" : "dennis" }
+{ "_id" : { "$oid" : "52c73bf692881eba8e000002" }, "most_consecutive" : 1, "total_hits" : 7, "total_misses" : 46, "username" : "jude" }
+{ "_id" : { "$oid" : "52cc84e392881e3ea1000002" }, "most_consecutive" : 1, "total_hits" : 4, "total_misses" : 33, "username" : "kofi" }
+{ "_id" : { "$oid" : "530677ff92881e820e000002" }, "total_hits" : 0, "total_misses" : 5, "most_consecutive" : 0, "username" : "william" }
