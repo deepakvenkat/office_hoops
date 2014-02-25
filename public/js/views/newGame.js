@@ -32,12 +32,14 @@ app.NewGameView = Backbone.View.extend({
   startGame : function () {
     var params = {};
     var name = $("#gameName").val();
+    var rounds = $("#rounds").val();
     if (!!name) params.name = name;
     var usernames = [];
     $(".username").each(function () {
       usernames.push(this.value);
     });
     params.usernames = usernames;
+    params.rounds = rounds;
     this.model.fetch({data: params,
       type: "POST",
       success: function (d) {
