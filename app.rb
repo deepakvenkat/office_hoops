@@ -85,17 +85,17 @@ get '/api/stats' do
 end
 
 get '/api/players' do
-  players = User.all
+  players = User.get_all
   content_type :json
-  {players: players}.to_json
+  players.to_json
 end
 
 ####Models####
 class User
   include Mongoid::Document
   field :username, type: String
-  field :total_hits, type: Integer, default: 0
-  field :total_misses, type: Integer, default: 0
+  field :total_hits, type: Float, default: 0
+  field :total_misses, type: Float, default: 0
   field :most_consecutive, type: Integer, default: 0
   validates_uniqueness_of :username
 
@@ -107,6 +107,20 @@ class User
       user.most_consecutive = consecutive
     end
     user.save!
+  end
+
+  def self.get_all
+    users = User.all
+    game_stats = GameStats.all.first
+    results = []
+    users.each do |user|
+      hit_ratio = ((user.total_hits/(user.total_hits + user.total_misses)) * 100).round(2)
+      wins = game_stats.wins[user.username] || 0
+      consecutive_wins = game_stats.consecutive_wins[user.username] || 0
+      result = {username: user.username, hit_ratio: hit_ratio, wins: wins, consecutive_wins: consecutive_wins, most_consecutive: user.most_consecutive, hits: user.total_hits, misses: user.total_misses}
+      results.push(result)
+    end
+    results
   end
 end
 
