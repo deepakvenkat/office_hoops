@@ -4,7 +4,5 @@ app.GameModel = Backbone.Model.extend(({
 
   idAttribute : "_id",
 
-  initialize : function () {
-
-  }
+  initialize : function () {}
 }));

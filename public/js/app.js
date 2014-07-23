@@ -22,7 +22,8 @@ app.Router = Backbone.Router.extend({
     "/" : "home",
     "game/new" : "newGame",
     "game/:id" : "game",
-    "statistics" : "showStats"
+    "statistics" : "showStats",
+    "players" : "showPlayers"
   },
 
   initialize : function () {
@@ -32,7 +33,7 @@ app.Router = Backbone.Router.extend({
   },
 
   home: function () {
-    $(".stats").removeClass('active');
+    $(".active").removeClass('active');
     $(".home").addClass("active");
     app.homeView = new app.HomeView();
     this.$content.html(app.homeView.render().el);
@@ -53,9 +54,16 @@ app.Router = Backbone.Router.extend({
 
   showStats : function () {
     app.statsView = new app.StatsView({model: new app.StatsModel()});
-    $(".home").removeClass('active');
+    $(".active").removeClass('active');
     $(".stats").addClass("active");
     this.$content.html(app.statsView.render().el);
+  },
+
+  showPlayers : function () {
+    app.playersView = new app.PlayersView({ collection : new app.PlayersCollection()});
+    $(".active").removeClass("active");
+    $(".players").addClass("active");
+    this.$content.html(app.playersView.render().el);
   }
 });
 
@@ -66,8 +74,10 @@ $(document).on("ready", function () {
       "NewGameView",
       "GameView",
       "PlayerView",
+      "PlayersView",
+      "PlayerProfileView",
       "WinnerView",
-      "StatsView"
+      "StatsView",
     ], function () {
     app.router = new app.Router();
     Backbone.history.start();
