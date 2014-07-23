@@ -55,7 +55,7 @@ put '/api/game/:id' do
   users.each do |user|
     player = players[user]
     score = player["score"].to_i
-    misses = player["missed"].to_i
+    misses = player["misses"].to_i
     consecutive = player["max_consecutive"].to_i
     if score == max_score
       max_score = score
@@ -84,6 +84,12 @@ get '/api/stats' do
   {game_stats: game_stats}.to_json
 end
 
+get '/api/players' do
+  players = User.get_all
+  content_type :json
+  {players: players}.to_json
+end
+
 ####Models####
 class User
   include Mongoid::Document
@@ -101,6 +107,14 @@ class User
       user.most_consecutive = consecutive
     end
     user.save!
+  end
+
+  def self.get_all
+    users = User.all
+    users.each do |user|
+      user["hit_ratio"] = (user.total_hits/(user.total_hits + user.total_misses)) * 100
+    end
+    return users
   end
 end
 
