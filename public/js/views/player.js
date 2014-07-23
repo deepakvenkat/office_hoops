@@ -25,4 +25,4 @@ app.PlayerView = Backbone.View.extend({
   playerMiss : function () {
     app.gameView.playerAction(this.player, "miss");
   }
-})
+});
