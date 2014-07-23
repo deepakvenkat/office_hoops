@@ -53,7 +53,7 @@ app.GameView = Backbone.View.extend({
               params.players[winner[i]].next = undefined;
               nextPlayer = winner[0];
             } else {
-              params.player[winner[i]].next = winner[i + 1];
+              params.players[winner[i]].next = winner[i + 1];
             }
           }
         }
@@ -92,7 +92,7 @@ app.GameView = Backbone.View.extend({
         username,
         player,
         params = this.model.get('game');
-    for(var i = 0; i < params.username; i++) {
+    for(var i = 0; i < params.usernames.length; i++) {
       username = params.usernames[i];
       player = params.players[username];
       if (player.score > maxScore) {

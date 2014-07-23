@@ -36,12 +36,13 @@ post '/api/game' do
   game_params["name"] = params["name"]
   game_params["rounds"] = params["rounds"].to_i
   game_params["players"] = players
+  game_params["usernames"] = usernames
   game = Game.new(game_params)
   if game.save!
     content_type :json
     {game: game}.to_json
   else
-    puts error
+    puts "error"
   end
 end
 

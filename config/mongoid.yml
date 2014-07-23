@@ -1,6 +1,6 @@
 development:
   sessions:
     default:
-      database: hoops
+      database: hoops_dev
       hosts:
         - localhost:27017
