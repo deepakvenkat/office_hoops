@@ -85,7 +85,7 @@ get '/api/stats' do
 end
 
 get '/api/players' do
-  players = User.get_all
+  players = User.all
   content_type :json
   {players: players}.to_json
 end
@@ -107,14 +107,6 @@ class User
       user.most_consecutive = consecutive
     end
     user.save!
-  end
-
-  def self.get_all
-    users = User.all
-    users.each do |user|
-      user["hit_ratio"] = (user.total_hits/(user.total_hits + user.total_misses)) * 100
-    end
-    return users
   end
 end
 
